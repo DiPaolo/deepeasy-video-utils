@@ -1,0 +1,4 @@
+DEBUG = False
+CALC_PERFORMANCE = False
+# USER_NAME = None
+# USER_PASSWORD = None

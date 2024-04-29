@@ -27,6 +27,7 @@ def generate_test_video(width: int, height: int, duration_sec: int, framerate: f
 
     return out_filename
 
+
 def generate_10hrs_video(src_filename: str) -> None:
     target_duration_sec = 41 * 60 * 60
     src_duration = get_video_duration(src_filename)
