@@ -22,7 +22,7 @@ def test_signal():
     #
     # utils.use_credentials()
 
-    perf_counter = cli_utils.start_perf_counter(f"list {name} logs")
+    perf_counter = cli_utils.start_perf_counter(f"generate test signal")
 
     # total_count, logins_logs = logs_service.get_login_logs()
 

@@ -5,6 +5,7 @@ import click as click
 
 from deepeasy_video_utils import config
 from deepeasy_video_utils.cli.commands.generator_command import generator
+from deepeasy_video_utils.cli.commands.info_command import info
 
 
 @click.group()
@@ -29,6 +30,7 @@ def cli(debug: bool, perf: bool):
 
 
 cli.add_command(generator)
+cli.add_command(info)
 
 
 def init_app():
