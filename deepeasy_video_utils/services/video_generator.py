@@ -15,7 +15,7 @@ def generate_test_video(width: int, height: int, duration_sec: int, framerate: f
     out_filename = \
         f'test_tv_signal_{width}_{height}_{framerate}fps_{sec_to_human_readable(duration_sec)}.mp4'
 
-    cmdline = ['ffmpeg', '-f', 'lavfi', '-i', f'testsrc=duration={duration_sec}:size={width}x{height}:rate={framerate}',
+    cmdline = ['ffmpeg', '-hide_banner', '-f', 'lavfi', '-i', f'testsrc=duration={duration_sec}:size={width}x{height}:rate={framerate}',
                '-vf', filter, '-c:v', 'libx264', '-b:v', '500k', '-minrate', '500k', '-maxrate', '500k', '-bufsize',
                '500k', '-pix_fmt', 'yuv420p', out_filename]
 
