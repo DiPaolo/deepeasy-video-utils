@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 def sec_to_human_readable(sec: int) -> str:
     h = sec // 3600
     sec = sec % 3600
@@ -19,3 +22,18 @@ def sec_to_human_readable(sec: int) -> str:
         left_text += f'{sec}sec'
 
     return left_text
+
+
+def sec_to_ffmpeg_duration(sec: float) -> Optional[str]:
+    msec = int(sec * 1000)
+
+    h = msec // 3600000
+    msec = msec % 3600000
+
+    m = msec // 60000
+    msec = msec % 60000
+
+    sec = msec // 1000
+    msec = msec % 1000
+
+    return f'{h:02}:{m:02}:{sec:02}'

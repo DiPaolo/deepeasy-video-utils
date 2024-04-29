@@ -1,11 +1,16 @@
 import logging
 import os
+import sys
 
 import click as click
 
+import deepeasy_video_utils.cli.utils as cli_utils
 from deepeasy_video_utils import config
 from deepeasy_video_utils.cli.commands.generator_command import generator
 from deepeasy_video_utils.cli.commands.info_command import info
+from deepeasy_video_utils.cli.common import logger
+from deepeasy_video_utils.cli.ret_codes import LOOP_CMD_START_RET_CODE
+from deepeasy_video_utils.services.video_generator import loop_video
 
 
 @click.group()
@@ -31,6 +36,32 @@ def cli(debug: bool, perf: bool):
 
 cli.add_command(generator)
 cli.add_command(info)
+
+
+@cli.command(help='Loop source video')
+@click.option('-f', '--file', type=str, metavar='filename', help='Source video file')
+@click.option('-d', '--duration', type=int, metavar='duration', help='Target duration in seconds')
+def loop(file: str, duration: int):
+    if file is None:
+        logger.error('failed to loop video: file is not specified')
+        click.echo("filename is not specified. Please specify it using '-f' or '--file'", err=True)
+        sys.exit(LOOP_CMD_START_RET_CODE + 0)
+
+    perf_counter = cli_utils.start_perf_counter(f"loop video")
+
+    filename = loop_video(file, duration)
+
+    cli_utils.print_perf_counter_report(perf_counter)
+
+    if filename is None:
+        err_msg = 'failed to loop video: unknown error'
+        logger.error(err_msg)
+        click.echo(err_msg, err=True)
+        sys.exit(LOOP_CMD_START_RET_CODE + 1)
+
+    click.echo(filename)
+
+    sys.exit(0)
 
 
 def init_app():

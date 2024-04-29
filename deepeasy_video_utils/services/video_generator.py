@@ -3,7 +3,7 @@ import os
 from typing import Optional
 
 from deepeasy_video_utils.services.process import run_command
-from deepeasy_video_utils.services.utils import sec_to_human_readable
+from deepeasy_video_utils.services.utils import sec_to_human_readable, sec_to_ffmpeg_duration
 from deepeasy_video_utils.services.video_utils import get_video_duration
 
 
@@ -28,8 +28,8 @@ def generate_test_video(width: int, height: int, duration_sec: int, framerate: f
     return out_filename
 
 
-def generate_10hrs_video(src_filename: str) -> None:
-    target_duration_sec = 41 * 60 * 60
+def loop_video(src_filename: str, duration_sec: int) -> Optional[str]:
+    target_duration_sec = duration_sec
     src_duration = get_video_duration(src_filename)
     loop_count = math.ceil(target_duration_sec / src_duration)
 
@@ -37,5 +37,14 @@ def generate_10hrs_video(src_filename: str) -> None:
     splitted_filename = os.path.splitext(src_filename)
     src_base_filename = splitted_filename[0]
     src_ext = splitted_filename[1]
-    run_command(['ffmpeg', '-stream_loop', str(loop_count), '-i', src_filename, '-c', 'copy', '-y',
-                 f'{src_base_filename} 10 hours{src_ext}'])
+    out_filename = f'{src_base_filename}_{sec_to_human_readable(target_duration_sec)}{src_ext}'
+
+    cmdline = ['ffmpeg', '-hide_banner', '-stream_loop', str(loop_count), '-i', src_filename, '-c', 'copy', '-t',
+               sec_to_ffmpeg_duration(duration_sec), '-y', out_filename]
+
+    ret = run_command(cmdline)
+    if ret.returncode != 0:
+        print(ret.stderr)
+        return None
+
+    return out_filename

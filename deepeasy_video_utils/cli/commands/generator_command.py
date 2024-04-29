@@ -13,7 +13,6 @@ def generator():
 
 
 @generator.command()
-# @click.option('--name', type=str, default=None, help='Name of logs to list')
 def test_signal():
     # if name is None:
     #     logger.error('failed to list logs: logs name is not specified')

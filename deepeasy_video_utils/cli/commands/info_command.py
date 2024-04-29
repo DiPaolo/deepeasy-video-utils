@@ -21,7 +21,7 @@ def duration(file: str):
         click.echo("filename is not specified. Please specify it using '-f' or '--file'", err=True)
         sys.exit(GENERATOR_CMD_START_RET_CODE + 0)
 
-    perf_counter = cli_utils.start_perf_counter(f"get media info")
+    perf_counter = cli_utils.start_perf_counter(f"get media duration")
 
     duration_sec = get_video_duration(file)
     if duration_sec.is_integer():
