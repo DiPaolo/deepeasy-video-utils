@@ -3,6 +3,7 @@ import sys
 import click
 
 import deepeasy_video_utils.cli.utils as cli_utils
+from deepeasy_video_utils import config
 from deepeasy_video_utils.services.utils import sec_to_human_readable
 from deepeasy_video_utils.services.video_generator import generate_test_video
 
@@ -14,20 +15,8 @@ def generator():
 
 @generator.command()
 def test_signal():
-    # if name is None:
-    #     logger.error('failed to list logs: logs name is not specified')
-    #     click.echo("ERROR: Logs name is not specified. Please specify it using '--name'")
-    #     sys.exit(LOGS_CMD_START_RET_CODE + 0)
-    #
-    # utils.use_credentials()
-
-    perf_counter = cli_utils.start_perf_counter(f"generate test signal")
-
-    # total_count, logins_logs = logs_service.get_login_logs()
-
-    # limited_logs = len(logins_logs)
-
-    # logger.info(f'getting login logs done (total_count={total_count}, limited_logs={limited_logs})')
+    if config.CALC_PERFORMANCE:
+        perf_counter = cli_utils.start_perf_counter(f"generate test signal")
 
     framerates = [
         # 15, 20, 21, 24,
@@ -64,14 +53,7 @@ def test_signal():
                 filename = generate_test_video(width, height, duration, framerate)
                 print(f'OK: {filename}' if filename else 'failed')
 
-    # if total_count == 0:
-    #     click.echo(f"No login logs found")
-    #     sys.exit(0)
-    #
-    # click.echo(f"Found {total_count} login logs. {limited_logs} will be shown:")
-    # for l in logins_logs:
-    #     click.echo(f'  {l.created_date} {l.user_id}')
-
-    cli_utils.print_perf_counter_report(perf_counter)
+    if config.CALC_PERFORMANCE:
+        cli_utils.print_perf_counter_report(perf_counter)
 
     sys.exit(0)

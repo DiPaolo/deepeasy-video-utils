@@ -47,11 +47,13 @@ def loop(file: str, duration: int):
         click.echo("filename is not specified. Please specify it using '-f' or '--file'", err=True)
         sys.exit(LOOP_CMD_START_RET_CODE + 0)
 
-    perf_counter = cli_utils.start_perf_counter(f"loop video")
+    if config.CALC_PERFORMANCE:
+        perf_counter = cli_utils.start_perf_counter(f"loop video")
 
     filename = loop_video(file, duration)
 
-    cli_utils.print_perf_counter_report(perf_counter)
+    if config.CALC_PERFORMANCE:
+        cli_utils.print_perf_counter_report(perf_counter)
 
     if filename is None:
         err_msg = 'failed to loop video: unknown error'
