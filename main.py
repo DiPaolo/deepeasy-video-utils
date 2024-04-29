@@ -61,8 +61,10 @@ def sec_to_human_readable(sec: int) -> str:
 
 
 def generate_test_video(width: int, height: int, duration_sec: int, framerate: float) -> Optional[str]:
-    filter = f"drawtext=fontfile=tf.ttf: text=WTF: timecode='00\:00\:00\:00': r={framerate}: fontcolor=0xccFFFF@1: fontsize=96: box=1: boxcolor=0x000000@0.2"
+    filter = f"drawtext=fontfile=tf.ttf: timecode='00\:00\:00\:00': r={framerate}: fontcolor=0xccFFFF@1: fontsize=96: box=1: boxcolor=0x000000@0.2"
     # filter1 = f"drawtext=fontfile=tf.ttf: text=WTF: x=10: y=400: fontcolor=0xccFFFF@1: fontsize=96: box=1: boxcolor=0x000000@0.2"
+    filter = f"[in]drawtext=fontfile=tf.ttf: timecode='00\:00\:00\:00': r={framerate}: x=20: y=0: fontcolor=0xccFFFF@1: fontsize=96: box=1: boxcolor=0x000000@0.2, drawtext=fontfile=tf.ttf: text='{width}x{height}@{framerate}, {sec_to_human_readable(duration_sec)}': x=20: y=(w)-200: fontcolor=0xccFFFF@1: fontsize=36: box=1: boxcolor=0x000000@0.2[out]"
+    # filter = "[in]drawtext=fontsize=60:timecode='00\:00\:00\:00':r={framerate}:x=20:y=0[out]"
     out_filename = \
         f'test_tv_signal_{width}_{height}_{framerate}fps_{sec_to_human_readable(duration_sec)}.mp4'
 
@@ -81,19 +83,21 @@ def generate_test_video(width: int, height: int, duration_sec: int, framerate: f
 
 def main() -> None:
     framerates = [
-        24,
-        # 25, 30, 50, 60
+        15, 20, 21, 24,
+        25,
+        29, 30, 50, 60
     ]
     durations = [
-        # 1, 4, 5, 6,
-        # 9, 10, 11,
+        1,
+        # 4, 5, 6,
+        9, 10, 11,
         15,
-        # 60,
-        # 29, 30, 31,
-        # 59, 60, 61,
-        # 99, 100, 101,
-        # 119, 120, 121,
-        # 599, 600, 601,
+        29, 30, 31,
+        # 44, 45, 46,
+        59, 60, 61,
+        # # 99, 100, 101,
+        119, 120, 121,
+        599, 600, 601,
         # 60 * 60 - 1, 60 * 60, 60 * 60 + 1,
         # 2 * 60 * 60 - 1, 2 * 60 * 60, 2 * 60 * 60 + 1,
         # 6 * 60 * 60 - 1, 6 * 60 * 60, 6 * 60 * 60 + 1,
